@@ -1,46 +1,38 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 class Solution {
-    public List<List<Integer>> threeSum(int[] nums) {
-        List<List<Integer>> result = new ArrayList<>();
-        Arrays.sort(nums);
-        for (int i = 0; i<nums.length-2;i++){
-            if(i>0 && nums[i]==nums[i-1]){
-                continue;
-            }
-            if(nums[i]>0){
-                break;
-            }
-
-            int left = i+1;
-            int right  = nums.length-1;
-
-            while (left<right){
-                int sum = nums[i]+nums[left]+nums[right];
-                if(sum==0){
-                    result.add(Arrays.asList(nums[i],nums[left],nums[right]));
-
-                    while(left<right && nums[left]==nums[left+1]){
-                        left++;
-                    }
-
-                    while (left<right && nums[right]==nums[right-1]){
-                        right--;
-                    }
-
-                    left++;
-                    right--;
-                }else if (sum<0){
-                    left++;
-                }else {
-                    right--;
-                }
-            }
-        }
-
-        return result;
+    public void nextPermutation(int[] nums) {
+        int i = nums.length - 2;
         
+        // Step 1: Piche se pehla chhota element (breakpoint) dhoondo
+        while (i >= 0 && nums[i] >= nums[i + 1]) {
+            i--;
+        }
+        
+        // Step 2: Agar breakpoint mil gaya, toh usse thoda sa bada number dhoondo aur swap karo
+        if (i >= 0) {
+            int j = nums.length - 1;
+            while (nums[j] <= nums[i]) {
+                j--;
+            }
+            swap(nums, i, j);
+        }
+        
+        // Step 3: i ke aage ke saare elements ko reverse kar do
+        reverse(nums, i + 1, nums.length - 1);
+    }
+    
+    // Do numbers ko aapas mein badalne (swap karne) ka helper method
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+    
+    // Array ke ek hisse ko palatne (reverse) karne ka helper method
+    private void reverse(int[] nums, int start, int end) {
+        while (start < end) {
+            swap(nums, start, end);
+            start++;
+            end--;
+        }
     }
 }
